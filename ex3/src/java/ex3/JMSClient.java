@@ -1,3 +1,5 @@
+package ex3;
+
 
 import java.util.Scanner;
 import javax.annotation.Resource;
