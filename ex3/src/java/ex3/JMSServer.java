@@ -43,24 +43,21 @@ public class JMSServer implements MessageListener {
     @Override
     public void onMessage(Message message) {
     try {
-    if (message instanceof TextMessage) {
-        String[] range = ((TextMessage) message).getText().split(",");
-        long start = Long.parseLong(range[0].trim());
-        long end = Long.parseLong(range[1].trim());
+        if (message instanceof TextMessage) {
+            String[] range = ((TextMessage) message).getText().split(",");
+            long start = Long.parseLong(range[0].trim());
+            long end = Long.parseLong(range[1].trim());
 
-        if (!isRangeProcessed(start, end)) {
             int primeCount = countPrimesInRange(start, end);
+
             System.out.println("The number of primes between  " + start + " and " + end + " is " + primeCount);
-            markRangeAsProcessed(start, end); // Mark the range as processed
-        } else {
-            System.out.println("Range " + start + " to " + end + " has already been processed.");
+
+        } else {    
+            System.out.println("Received unknown message type.");
         }
-    } else {
-        System.out.println("Received unknown message type.");
+    } catch (JMSException e) {
+        e.printStackTrace();
     }
-} catch (JMSException e) {
-    e.printStackTrace();
-}
 }
     private int countPrimesInRange(long start, long end) {
         AtomicInteger count = new AtomicInteger(0);
@@ -86,13 +83,5 @@ public class JMSServer implements MessageListener {
         }
 
         return true;
-    }
-
-    private boolean isRangeProcessed(long start, long end) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    private void markRangeAsProcessed(long start, long end) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
